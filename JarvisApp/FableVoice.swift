@@ -61,11 +61,16 @@ actor FableVoice {
     func warmUp() {
         guard warmUpTask == nil else { return }
         warmUpTask = Task {
+            let started = Date()
+            print("[Fable] Getting the voice ready (the first time downloads it, a few minutes)...")
             do {
                 try await kokoro.initialize(preloadVoices: [FableVoice.voiceName])
+                print("[Fable] Kokoro voice loaded after \(Int(Date().timeIntervalSince(started))) s; loading British pronunciation...")
                 _ = try await pronouncer.phonemes(for: "Good evening, sir.", voice: .bmFable)
                 ready = true
+                print("[Fable] READY after \(Int(Date().timeIntervalSince(started))) s. Jarvis now speaks as Fable.")
             } catch {
+                print("[Fable] FAILED after \(Int(Date().timeIntervalSince(started))) s: \(error)")
                 warmUpTask = nil
             }
         }
@@ -73,6 +78,7 @@ actor FableVoice {
 
     func speak(_ text: String) async -> Data? {
         guard ready else {
+            print("[Fable] Not ready yet, so this reply uses the iPad's own voice.")
             warmUp()
             return nil
         }
@@ -86,6 +92,7 @@ actor FableVoice {
             }
             return FableWAV.join(parts)
         } catch {
+            print("[Fable] Couldn't speak that line: \(error)")
             return nil
         }
     }
