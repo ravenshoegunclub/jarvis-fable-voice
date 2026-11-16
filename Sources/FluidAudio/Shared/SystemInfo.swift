@@ -8,6 +8,13 @@ import OSLog
 import Darwin
 #endif
 
+#if canImport(Darwin) && !canImport(MachTaskSelfWrapper)
+/// jarvis-fable-voice change: the C MachTaskSelfWrapper target was removed
+/// (Swift Playgrounds builds). A null port makes task_info fail, so the
+/// memory-reporting helpers below return nil instead of a figure.
+private func get_current_task_port() -> mach_port_t { mach_port_t(0) }
+#endif
+
 /// System information utilities and one-time environment reporting.
 public enum SystemInfo {
     // MARK: - Architecture detection

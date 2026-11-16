@@ -8,7 +8,7 @@ Swift Playgrounds on iPad can only build pure-Swift packages, so this copy remov
 - the C/C++ helper targets and the speaker-diarisation features that need them,
 - the LuxTTS resource bundle, the command-line tool and the tests.
 
-The library's Swift source is otherwise unchanged, apart from one guard added in `Sources/FluidAudio/TTS/LuxTts/G2p/LuxTtsG2p.swift` (marked in the file) so the removed LuxTTS bundle doesn't break the build. The upstream commit it was taken from is in `UPSTREAM_COMMIT`.
+The library's Swift source is otherwise unchanged, apart from two small, marked changes so the removed pieces don't break the build: a guard in `Sources/FluidAudio/TTS/LuxTts/G2p/LuxTtsG2p.swift`, and a stand-in for the removed memory-reporting helper in `Sources/FluidAudio/Shared/SystemInfo.swift` (memory figures now report as unavailable). The upstream commit it was taken from is in `UPSTREAM_COMMIT`.
 
 ## Licence
 
