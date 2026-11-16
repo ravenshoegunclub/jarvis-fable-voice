@@ -63,7 +63,7 @@ actor FableVoice {
         guard warmUpTask == nil else { return }
         warmUpTask = Task {
             let started = Date()
-            await FableStatus.say("Preparing the Fable voice, version two.")
+            await FableStatus.say("Preparing the Fable voice, version three.")
             do {
                 try await kokoro.initialize(preloadVoices: [FableVoice.voiceName])
                 print("[Fable] Kokoro voice loaded after \(Int(Date().timeIntervalSince(started))) s; loading British pronunciation...")
@@ -81,6 +81,7 @@ actor FableVoice {
     }
 
     func speak(_ text: String) async -> Data? {
+        print("[Fable] Asked to speak: \(String(text.prefix(60)))")
         guard ready else {
             print("[Fable] Not ready yet, so this reply uses the iPad's own voice.")
             warmUp()
@@ -94,7 +95,18 @@ actor FableVoice {
                 parts.append(try await kokoro.synthesizeFromPhonemes(
                     phonemes, voice: FableVoice.voiceName, speed: FableVoice.speed))
             }
-            return FableWAV.join(parts)
+            let audio = FableWAV.join(parts)
+            if let audio {
+                do {
+                    _ = try AVAudioPlayer(data: audio)
+                    print("[Fable] Made \(audio.count) bytes of audio from \(parts.count) sentence(s); the player accepts it.")
+                } catch {
+                    print("[Fable] Made \(audio.count) bytes of audio but the player REJECTS it: \(error)")
+                }
+            } else {
+                print("[Fable] No audio came back (\(parts.count) sentence(s)).")
+            }
+            return audio
         } catch {
             print("[Fable] Couldn't speak that line: \(error)")
             return nil
