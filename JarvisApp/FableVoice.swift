@@ -63,7 +63,7 @@ actor FableVoice {
         guard warmUpTask == nil else { return }
         warmUpTask = Task {
             let started = Date()
-            await FableStatus.say("Preparing the Fable voice.")
+            await FableStatus.say("Preparing the Fable voice, version two.")
             do {
                 try await kokoro.initialize(preloadVoices: [FableVoice.voiceName])
                 print("[Fable] Kokoro voice loaded after \(Int(Date().timeIntervalSince(started))) s; loading British pronunciation...")
