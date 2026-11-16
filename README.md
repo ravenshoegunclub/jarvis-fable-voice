@@ -10,6 +10,12 @@ Swift Playgrounds on iPad can only build pure-Swift packages, so this copy remov
 
 The library's Swift source is otherwise unchanged, apart from two small, marked changes so the removed pieces don't break the build: a guard in `Sources/FluidAudio/TTS/LuxTts/G2p/LuxTtsG2p.swift`, and a stand-in for the removed memory-reporting helper in `Sources/FluidAudio/Shared/SystemInfo.swift` (memory figures now report as unavailable). The upstream commit it was taken from is in `UPSTREAM_COMMIT`.
 
+## Jarvis app file
+
+**[FableVoice for the iPad: tap here for the latest version](https://github.com/ravenshoegunclub/jarvis-fable-voice/blob/57a8727/JarvisApp/FableVoice.swift)**
+
+This link is fixed to an exact version, so it is never out of date.
+
 ## Licence
 
 FluidAudio is licensed under the Apache License 2.0 (see `LICENSE` and `ThirdPartyLicenses/`). All credit for the library goes to FluidInference and its contributors. The changes made here are listed above and at the top of `Package.swift`.
