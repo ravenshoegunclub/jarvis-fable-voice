@@ -63,7 +63,7 @@ actor FableVoice {
         guard warmUpTask == nil else { return }
         warmUpTask = Task {
             let started = Date()
-            await FableStatus.say("Preparing the Fable voice, version three.")
+            print("[Fable] Preparing the Fable voice (version four).")
             do {
                 try await kokoro.initialize(preloadVoices: [FableVoice.voiceName])
                 print("[Fable] Kokoro voice loaded after \(Int(Date().timeIntervalSince(started))) s; loading British pronunciation...")
@@ -72,7 +72,7 @@ actor FableVoice {
                 try await pronouncer.initialize(voices: [.bmFable])
                 _ = try await pronouncer.phonemes(for: "Good evening, sir.", voice: .bmFable)
                 ready = true
-                await FableStatus.say("The Fable voice is ready, sir. It took \(Int(Date().timeIntervalSince(started))) seconds.")
+                print("[Fable] Ready after \(Int(Date().timeIntervalSince(started))) s.")
             } catch {
                 await FableStatus.say("The Fable voice couldn't load. \(String(String(describing: error).prefix(160)))")
                 warmUpTask = nil
@@ -96,16 +96,7 @@ actor FableVoice {
                     phonemes, voice: FableVoice.voiceName, speed: FableVoice.speed))
             }
             let audio = FableWAV.join(parts)
-            if let audio {
-                do {
-                    _ = try AVAudioPlayer(data: audio)
-                    print("[Fable] Made \(audio.count) bytes of audio from \(parts.count) sentence(s); the player accepts it.")
-                } catch {
-                    print("[Fable] Made \(audio.count) bytes of audio but the player REJECTS it: \(error)")
-                }
-            } else {
-                print("[Fable] No audio came back (\(parts.count) sentence(s)).")
-            }
+            print("[Fable] Spoke \(parts.count) sentence(s), \(audio?.count ?? 0) bytes.")
             return audio
         } catch {
             print("[Fable] Couldn't speak that line: \(error)")
@@ -175,8 +166,8 @@ enum FableWAV {
     }
 }
 
-/// Speaks Fable's progress aloud in the iPad's own voice (the Playgrounds
-/// console doesn't show this app's messages), and prints it too.
+/// Says aloud, in the iPad's own voice, if Fable fails to load, so a fault
+/// can't hide behind the silent fall-back. Also printed to the console.
 @MainActor
 enum FableStatus {
     private static let synthesizer = AVSpeechSynthesizer()
