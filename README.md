@@ -15,7 +15,9 @@ The library's Swift source is otherwise unchanged, apart from two small, marked 
 
 **[FableVoice for the iPad: tap here for the latest version](https://github.com/ravenshoegunclub/jarvis-fable-voice/blob/60bbf7f/JarvisApp/FableVoice.swift)**
 
-This link is fixed to an exact version, so it is never out of date.
+**[JarvisCore for the iPad: tap here for the latest version](https://github.com/ravenshoegunclub/jarvis-fable-voice/blob/9eeb24e/JarvisApp/JarvisCore.swift)**
+
+These links are fixed to an exact version, so they are never out of date.
 
 ## Licence
 
