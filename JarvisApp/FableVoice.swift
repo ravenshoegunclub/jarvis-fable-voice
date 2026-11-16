@@ -1,3 +1,4 @@
+import AVFoundation
 import Foundation
 import FluidAudio
 
@@ -62,15 +63,15 @@ actor FableVoice {
         guard warmUpTask == nil else { return }
         warmUpTask = Task {
             let started = Date()
-            print("[Fable] Getting the voice ready (the first time downloads it, a few minutes)...")
+            await FableStatus.say("Preparing the Fable voice.")
             do {
                 try await kokoro.initialize(preloadVoices: [FableVoice.voiceName])
                 print("[Fable] Kokoro voice loaded after \(Int(Date().timeIntervalSince(started))) s; loading British pronunciation...")
                 _ = try await pronouncer.phonemes(for: "Good evening, sir.", voice: .bmFable)
                 ready = true
-                print("[Fable] READY after \(Int(Date().timeIntervalSince(started))) s. Jarvis now speaks as Fable.")
+                await FableStatus.say("The Fable voice is ready, sir. It took \(Int(Date().timeIntervalSince(started))) seconds.")
             } catch {
-                print("[Fable] FAILED after \(Int(Date().timeIntervalSince(started))) s: \(error)")
+                await FableStatus.say("The Fable voice couldn't load. \(String(String(describing: error).prefix(160)))")
                 warmUpTask = nil
             }
         }
@@ -156,5 +157,19 @@ enum FableWAV {
         let littleEndian = [UInt8(value & 0xFF), UInt8((value >> 8) & 0xFF),
                             UInt8((value >> 16) & 0xFF), UInt8((value >> 24) & 0xFF)]
         data.replaceSubrange(offset..<(offset + 4), with: littleEndian)
+    }
+}
+
+/// Speaks Fable's progress aloud in the iPad's own voice (the Playgrounds
+/// console doesn't show this app's messages), and prints it too.
+@MainActor
+enum FableStatus {
+    private static let synthesizer = AVSpeechSynthesizer()
+
+    static func say(_ text: String) {
+        print("[Fable] " + text)
+        let utterance = AVSpeechUtterance(string: text)
+        utterance.voice = AVSpeechSynthesisVoice(language: "en-GB")
+        synthesizer.speak(utterance)
     }
 }
