@@ -67,6 +67,9 @@ actor FableVoice {
             do {
                 try await kokoro.initialize(preloadVoices: [FableVoice.voiceName])
                 print("[Fable] Kokoro voice loaded after \(Int(Date().timeIntervalSince(started))) s; loading British pronunciation...")
+                // Paradee must load its own tables (vocab, British lexicon) before
+                // it will pronounce anything: "not initialized" otherwise (16/11/2026).
+                try await pronouncer.initialize(voices: [.bmFable])
                 _ = try await pronouncer.phonemes(for: "Good evening, sir.", voice: .bmFable)
                 ready = true
                 await FableStatus.say("The Fable voice is ready, sir. It took \(Int(Date().timeIntervalSince(started))) seconds.")
