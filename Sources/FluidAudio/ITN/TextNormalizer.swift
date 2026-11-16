@@ -181,28 +181,8 @@ public final class TextNormalizer: Sendable {
         #endif
     }
 
-    /// Normalize an ASR result, returning a new result with normalized text.
-    ///
-    /// - Parameter result: The original ASR result
-    /// - Returns: A new ASR result with normalized text
-    public func normalize(result: ASRResult) -> ASRResult {
-        let normalizedText = normalizeSentence(result.text)
-
-        guard normalizedText != result.text else {
-            return result
-        }
-
-        return ASRResult(
-            text: normalizedText,
-            confidence: result.confidence,
-            duration: result.duration,
-            processingTime: result.processingTime,
-            tokenTimings: result.tokenTimings,
-            ctcDetectedTerms: result.ctcDetectedTerms,
-            ctcAppliedTerms: result.ctcAppliedTerms,
-            ctcReplacements: result.ctcReplacements
-        )
-    }
+    // jarvis-fable-voice change (16/11/2026): normalize(result: ASRResult) removed;
+    // the ASR folder (and ASRResult) is excluded from this trimmed build.
 
     // MARK: - Custom Rules
 

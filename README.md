@@ -7,6 +7,7 @@ Swift Playgrounds on iPad can only build pure-Swift packages, so this copy remov
 - the prebuilt NeMo text-normalisation engine (text now passes through unchanged),
 - the C/C++ helper targets and the speaker-diarisation features that need them,
 - the LuxTTS resource bundle, the command-line tool and the tests.
+- from 1.1.0, the speech-recognition, voice-activity, diarisation, speech-enhancement and speaker folders and the LFM3Audio engine are left out of the build (faster builds in Swift Playgrounds); `Sources/FluidAudio/JarvisTrimStubs.swift` holds verbatim copies of the five small settings types `ModelNames.swift` still names, and one ASR-only helper was removed from `ITN/TextNormalizer.swift`.
 
 The library's Swift source is otherwise unchanged, apart from two small, marked changes so the removed pieces don't break the build: a guard in `Sources/FluidAudio/TTS/LuxTts/G2p/LuxTtsG2p.swift`, and a stand-in for the removed memory-reporting helper in `Sources/FluidAudio/Shared/SystemInfo.swift` (memory figures now report as unavailable). The upstream commit it was taken from is in `UPSTREAM_COMMIT`.
 
