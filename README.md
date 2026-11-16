@@ -12,7 +12,7 @@ The library's Swift source is otherwise unchanged, apart from two small, marked 
 
 ## Jarvis app file
 
-**[FableVoice for the iPad: tap here for the latest version](https://github.com/ravenshoegunclub/jarvis-fable-voice/blob/57a8727/JarvisApp/FableVoice.swift)**
+**[FableVoice for the iPad: tap here for the latest version](https://github.com/ravenshoegunclub/jarvis-fable-voice/blob/60bbf7f/JarvisApp/FableVoice.swift)**
 
 This link is fixed to an exact version, so it is never out of date.
 
